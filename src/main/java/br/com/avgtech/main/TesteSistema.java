@@ -1,4 +1,4 @@
-package br.com.avgtech;
+package br.com.avgtech.main;
 
 public class TesteSistema {
 }
