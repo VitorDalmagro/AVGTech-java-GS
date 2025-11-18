@@ -1,12 +1,10 @@
-package br.com.avgtech.resource;
+package br.com.avgtech;
 
 import br.com.avgtech.BO.CadastroBO;
 import br.com.avgtech.BO.LoginBO;
+import br.com.avgtech.BO.UsuarioBO;
 import br.com.avgtech.beans.Usuario;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -18,28 +16,33 @@ public class AutenticacaoResource {
     @POST
     @Path("/cadastrar")
     public Response cadastrar(Usuario usuario) {
-
         try {
             CadastroBO bo = new CadastroBO();
             String mensagem = bo.cadastrar(usuario);
-            return Response.status(Response.Status.CREATED).entity(mensagem).build();
-
+            return Response.status(201).entity(mensagem).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            switch (e.getMessage()) {
+                case "EMAIL_JA_EXISTE":
+                    return Response.status(409).entity("Email já existe.").build();
+                case "CPF_JA_EXISTE":
+                    return Response.status(409).entity("CPF já existe.").build();
+                case "DADOS_INVALIDOS":
+                    return Response.status(400).entity("Dados inválidos.").build();
+                default:
+                    return Response.status(500).entity("Erro inesperado.").build();
+            }
         }
     }
-
     @POST
     @Path("/login")
     public Response login(Usuario usuario) {
-
         try {
             LoginBO bo = new LoginBO();
             Usuario usuarioLogado = bo.logar(usuario.getEmail(), usuario.getSenha());
-            return Response.ok(usuarioLogado).build();
-
+            return Response.status(200).entity(usuarioLogado).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+            return Response.status(401).entity(e.getMessage()).build();
         }
     }
+
 }

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO {
 
@@ -148,4 +150,64 @@ public class UsuarioDAO {
 
         return u;
     }
+    public List<Usuario> listarTodos() throws SQLException {
+
+        List<Usuario> lista = new ArrayList<Usuario>();
+
+        String sql = "SELECT * FROM USUARIO";
+        PreparedStatement pstmt = cn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setIdUsuario(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setEmail(rs.getString(3));
+            u.setSenha(rs.getString(4));
+            u.setNumeroTelefone(rs.getString(5));
+            u.setCpf(rs.getString(6));
+            u.setDataCriacao(rs.getString(7));
+
+            lista.add(u);
+        }
+        rs.close();
+        pstmt.close();
+        return lista;
+    }
+    public String atualizar(Usuario usuario) throws SQLException {
+        String sql = "UPDATE USUARIO SET NOME=?, EMAIL=?, SENHA=?, NUMERO_TELEFONE=?, CPF=? WHERE ID_USUARIO=?";
+
+        PreparedStatement pstmt = cn.prepareStatement(sql);
+        pstmt.setString(1, usuario.getNome());
+        pstmt.setString(2, usuario.getEmail());
+        pstmt.setString(3, usuario.getSenha());
+        pstmt.setString(4, usuario.getNumeroTelefone());
+        pstmt.setString(5, usuario.getCpf());
+        pstmt.setInt(6, usuario.getIdUsuario());
+        int linhas = pstmt.executeUpdate();
+
+        pstmt.close();
+        if (linhas == 0) {
+            return "USUARIO_NAO_ENCONTRADO";
+        }
+        return "Usuario atualizado com sucesso!";
+    }
+    public String deletar(int id) throws SQLException {
+
+        String sql = "DELETE FROM USUARIO WHERE ID_USUARIO=?";
+
+        PreparedStatement pstmt = cn.prepareStatement(sql);
+
+        pstmt.setInt(1, id);
+
+        int linhas = pstmt.executeUpdate();
+
+        pstmt.close();
+
+        if (linhas == 0) {
+            return "USUARIO_NAO_ENCONTRADO";
+        }
+        return "Usuário deletado com sucesso!";
+    }
+
 }
