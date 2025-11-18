@@ -19,7 +19,6 @@ public class UsuarioDAO {
     }
 
     public String insert(Usuario usuario) throws SQLException {
-
         String sql = "INSERT INTO USUARIO (NOME, EMAIL, SENHA, NUMERO_TELEFONE, CPF) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement pstmt = cn.prepareStatement(sql);
@@ -32,66 +31,57 @@ public class UsuarioDAO {
 
         pstmt.execute();
         pstmt.close();
-
-
+        
         return "Usuário cadastrado com sucesso!";
     }
 
     public Usuario selecionarPorEmail(String email) throws SQLException {
-
         String sql = "SELECT * FROM USUARIO WHERE EMAIL=?";
         PreparedStatement pstmt = cn.prepareStatement(sql);
 
         pstmt.setString(1, email);
 
         ResultSet rs = pstmt.executeQuery();
-
-        Usuario u = null;
+        Usuario usuario = null;
 
         if (rs.next()) {
-            u = new Usuario();
-            u.setIdUsuario(rs.getInt(1));
-            u.setNome(rs.getString(2));
-            u.setEmail(rs.getString(3));
-            u.setSenha(rs.getString(4));
-            u.setNumeroTelefone(rs.getString(5));
-            u.setCpf(rs.getString(6));
-            u.setDataCriacao(rs.getString(7));
+            usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNome(rs.getString(2));
+            usuario.setEmail(rs.getString(3));
+            usuario.setSenha(rs.getString(4));
+            usuario.setNumeroTelefone(rs.getString(5));
+            usuario.setCpf(rs.getString(6));
+            usuario.setDataCriacao(rs.getString(7));
         }
-
         rs.close();
         pstmt.close();
 
-
-        return u;
+        return usuario;
     }
     public Usuario selecionarPorCpf(String cpf) throws SQLException {
-
         String sql = "SELECT * FROM USUARIO WHERE CPF=?";
         PreparedStatement pstmt = cn.prepareStatement(sql);
 
         pstmt.setString(1, cpf);
 
         ResultSet rs = pstmt.executeQuery();
-
-        Usuario u = null;
+        Usuario usuario = null;
 
         if (rs.next()) {
-            u = new Usuario();
-            u.setIdUsuario(rs.getInt(1));
-            u.setNome(rs.getString(2));
-            u.setEmail(rs.getString(3));
-            u.setSenha(rs.getString(4));
-            u.setNumeroTelefone(rs.getString(5));
-            u.setCpf(rs.getString(6));
-            u.setDataCriacao(rs.getString(7));
+            usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNome(rs.getString(2));
+            usuario.setEmail(rs.getString(3));
+            usuario.setSenha(rs.getString(4));
+            usuario.setNumeroTelefone(rs.getString(5));
+            usuario.setCpf(rs.getString(6));
+            usuario.setDataCriacao(rs.getString(7));
         }
-
         rs.close();
         pstmt.close();
 
-
-        return u;
+        return usuario;
     }
     public Usuario selecionarPorId(int id) throws SQLException {
 
@@ -101,25 +91,22 @@ public class UsuarioDAO {
         pstmt.setInt(1, id);
 
         ResultSet rs = pstmt.executeQuery();
-
-        Usuario u = null;
+        Usuario usuario = null;
 
         if (rs.next()) {
-            u = new Usuario();
-            u.setIdUsuario(rs.getInt(1));
-            u.setNome(rs.getString(2));
-            u.setEmail(rs.getString(3));
-            u.setSenha(rs.getString(4));
-            u.setNumeroTelefone(rs.getString(5));
-            u.setCpf(rs.getString(6));
-            u.setDataCriacao(rs.getString(7));
+            usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNome(rs.getString(2));
+            usuario.setEmail(rs.getString(3));
+            usuario.setSenha(rs.getString(4));
+            usuario.setNumeroTelefone(rs.getString(5));
+            usuario.setCpf(rs.getString(6));
+            usuario.setDataCriacao(rs.getString(7));
         }
-
         rs.close();
         pstmt.close();
 
-
-        return u;
+        return usuario;
     }
     public Usuario login(String email, String senha) throws SQLException {
 
@@ -131,24 +118,24 @@ public class UsuarioDAO {
 
         ResultSet rs = pstmt.executeQuery();
 
-        Usuario u = null;
+        Usuario usuario = null;
 
         if (rs.next()) {
-            u = new Usuario();
-            u.setIdUsuario(rs.getInt(1));
-            u.setNome(rs.getString(2));
-            u.setEmail(rs.getString(3));
-            u.setSenha(rs.getString(4));
-            u.setNumeroTelefone(rs.getString(5));
-            u.setCpf(rs.getString(6));
-            u.setDataCriacao(rs.getString(7));
+            usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNome(rs.getString(2));
+            usuario.setEmail(rs.getString(3));
+            usuario.setSenha(rs.getString(4));
+            usuario.setNumeroTelefone(rs.getString(5));
+            usuario.setCpf(rs.getString(6));
+            usuario.setDataCriacao(rs.getString(7));
         }
 
         rs.close();
         pstmt.close();
 
 
-        return u;
+        return usuario;
     }
     public List<Usuario> listarTodos() throws SQLException {
 
@@ -159,16 +146,16 @@ public class UsuarioDAO {
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()) {
-            Usuario u = new Usuario();
-            u.setIdUsuario(rs.getInt(1));
-            u.setNome(rs.getString(2));
-            u.setEmail(rs.getString(3));
-            u.setSenha(rs.getString(4));
-            u.setNumeroTelefone(rs.getString(5));
-            u.setCpf(rs.getString(6));
-            u.setDataCriacao(rs.getString(7));
+            Usuario usuario = new Usuario();
+            usuario.setIdUsuario(rs.getInt(1));
+            usuario.setNome(rs.getString(2));
+            usuario.setEmail(rs.getString(3));
+            usuario.setSenha(rs.getString(4));
+            usuario.setNumeroTelefone(rs.getString(5));
+            usuario.setCpf(rs.getString(6));
+            usuario.setDataCriacao(rs.getString(7));
 
-            lista.add(u);
+            lista.add(usuario);
         }
         rs.close();
         pstmt.close();
@@ -193,17 +180,12 @@ public class UsuarioDAO {
         return "Usuario atualizado com sucesso!";
     }
     public String deletar(int id) throws SQLException {
-
         String sql = "DELETE FROM USUARIO WHERE ID_USUARIO=?";
-
         PreparedStatement pstmt = cn.prepareStatement(sql);
 
         pstmt.setInt(1, id);
-
         int linhas = pstmt.executeUpdate();
-
         pstmt.close();
-
         if (linhas == 0) {
             return "USUARIO_NAO_ENCONTRADO";
         }
