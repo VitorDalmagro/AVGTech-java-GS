@@ -8,59 +8,61 @@ import java.util.List;
 public class CursoBO {
 
     public void cadastrar(Curso curso) throws Exception {
-        if (curso.getNome() == null || curso.getNome().isEmpty()) {
+        if (curso.getNome() == null || curso.getNome().trim().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        if (curso.getDescricao() == null || curso.getDescricao().isEmpty()) {
+        if (curso.getDescricao() == null || curso.getDescricao().trim().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        if (curso.getUrlVideo() == null || curso.getUrlVideo().isEmpty()) {
+        if (curso.getUrlVideo() == null || curso.getUrlVideo().trim().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO dao = new CursoDAO();
-        dao.inserir(curso);
+        CursoDAO cursoDAO = new CursoDAO();
+        cursoDAO.inserir(curso);
     }
     public Curso buscarPorId(int id) throws Exception {
         if (id <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO dao = new CursoDAO();
-        Curso curso = dao.selecionarPorId(id);
+        CursoDAO cursoDAO = new CursoDAO();
+        Curso curso = cursoDAO.selecionarPorId(id);
+
         if (curso == null) {
             throw new Exception("CURSO_NAO_ENCONTRADO");
         }
+
         return curso;
     }
-
     public List<Curso> listarTodos() throws Exception {
-        CursoDAO dao = new CursoDAO();
-        List<Curso> lista = dao.listarTodos();
+        CursoDAO cursoDAO = new CursoDAO();
+        List<Curso> lista = cursoDAO.listarTodos();
 
         if (lista.isEmpty()) {
             throw new Exception("LISTA_VAZIA");
         }
+
         return lista;
     }
-
     public void atualizar(Curso curso) throws Exception {
         if (curso.getIdCurso() <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO dao = new CursoDAO();
-        String r = dao.atualizar(curso);
+        CursoDAO cursoDAO = new CursoDAO();
+        String resultado = cursoDAO.atualizar(curso);
 
-        if (r.equals("CURSO_NAO_ENCONTRADO")) {
+        if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
             throw new Exception("CURSO_NAO_ENCONTRADO");
         }
     }
-
     public void deletar(int id) throws Exception {
         if (id <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO dao = new CursoDAO();
-        String r = dao.deletar(id);
-        if (r.equals("CURSO_NAO_ENCONTRADO")) {
+
+        CursoDAO cursoDAO = new CursoDAO();
+        String resultado = cursoDAO.deletar(id);
+
+        if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
             throw new Exception("CURSO_NAO_ENCONTRADO");
         }
     }

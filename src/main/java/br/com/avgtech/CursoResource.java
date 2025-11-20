@@ -26,7 +26,7 @@ public class CursoResource {
                 case "DADOS_INVALIDOS":
                     return Response.status(400).entity("Dados inválidos.").build();
                 default:
-                    return Response.status(500).entity("Erro inesperado.").build();
+                    return Response.status(500).entity("Erro inesperado: " + e.getMessage()).build();
             }
         }
     }
@@ -44,7 +44,7 @@ public class CursoResource {
                 case "CURSO_NAO_ENCONTRADO":
                     return Response.status(404).entity("Curso não encontrado.").build();
                 default:
-                    return Response.status(500).entity("Erro inesperado.").build();
+                    return Response.status(500).entity("Erro inesperado: " + e.getMessage()).build();
             }
         }
     }
@@ -60,7 +60,7 @@ public class CursoResource {
                 case "LISTA_VAZIA":
                     return Response.status(404).entity("Nenhum curso encontrado.").build();
                 default:
-                    return Response.status(500).entity("Erro inesperado.").build();
+                    return Response.status(500).entity("Erro inesperado: " + e.getMessage()).build();
             }
         }
     }
@@ -68,7 +68,6 @@ public class CursoResource {
     @PUT
     @Path("/atualizar")
     public Response atualizar(Curso curso) {
-
         try {
             CursoBO bo = new CursoBO();
             bo.atualizar(curso);
@@ -98,7 +97,7 @@ public class CursoResource {
                 case "CURSO_NAO_ENCONTRADO":
                     return Response.status(404).entity("Curso não encontrado.").build();
                 default:
-                    return Response.status(500).entity("Erro inesperado.").build();
+                    return Response.status(500).entity("Erro inesperado: " + e.getMessage()).build();
             }
         }
     }

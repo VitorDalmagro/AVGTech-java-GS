@@ -6,14 +6,17 @@ import br.com.avgtech.beans.Usuario;
 public class CadastroBO {
 
     public String cadastrar(Usuario usuario) throws Exception {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        UsuarioDAO dao = new UsuarioDAO();
-
+        // Validações de dados obrigatórios
         if (usuario.getNome() == null || usuario.getNome().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
         }
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
+        }
+        if (!usuario.getEmail().contains("@") || !usuario.getEmail().contains(".")) {
+            throw new Exception("EMAIL_INVALIDO");
         }
         if (usuario.getSenha() == null || usuario.getSenha().length() < 4) {
             throw new Exception("DADOS_INVALIDOS");
@@ -24,17 +27,18 @@ public class CadastroBO {
         if (usuario.getCpf() == null || usuario.getCpf().length() != 11) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        // Email existe?
-        Usuario emailExistente = dao.selecionarPorEmail(usuario.getEmail());
-        if (emailExistente != null) {
+
+        // Verifica email duplicado
+        Usuario usuarioComMesmoEmail = usuarioDAO.selecionarPorEmail(usuario.getEmail());
+        if (usuarioComMesmoEmail != null) {
             throw new Exception("EMAIL_JA_EXISTE");
         }
-        // CPF existe?
-        Usuario cpfExistente = dao.selecionarPorCpf(usuario.getCpf());
-        if (cpfExistente != null) {
+        // Verifica CPF duplicado
+        Usuario usuarioComMesmoCpf = usuarioDAO.selecionarPorCpf(usuario.getCpf());
+        if (usuarioComMesmoCpf != null) {
             throw new Exception("CPF_JA_EXISTE");
         }
 
-        return dao.insert(usuario);
+        return usuarioDAO.insert(usuario);
     }
 }
