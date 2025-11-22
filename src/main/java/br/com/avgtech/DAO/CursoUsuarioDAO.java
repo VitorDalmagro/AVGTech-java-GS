@@ -131,5 +131,16 @@ public class CursoUsuarioDAO {
 
         return lista;
     }
+    public void fecharConexao() {
+        if (conexao != null) {
+            try {
+                if (!conexao.isClosed()) {
+                    conexao.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+    }
 
 }

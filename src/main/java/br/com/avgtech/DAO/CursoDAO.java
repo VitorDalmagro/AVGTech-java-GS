@@ -100,4 +100,16 @@ public class CursoDAO {
         }
         return "CURSO_DELETADO";
     }
+    public void fecharConexao() {
+        if (conexao != null) {
+            try {
+                if (!conexao.isClosed()) {
+                    conexao.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+    }
+
 }
