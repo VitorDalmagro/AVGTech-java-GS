@@ -17,53 +17,86 @@ public class CursoBO {
         if (curso.getUrlVideo() == null || curso.getUrlVideo().trim().isEmpty()) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO cursoDAO = new CursoDAO();
-        cursoDAO.inserir(curso);
+        CursoDAO cursoDAO = null;
+        try {
+            cursoDAO = new CursoDAO();
+            cursoDAO.inserir(curso);
+        } finally {
+            if (cursoDAO != null) {
+                cursoDAO.fecharConexao();
+            }
+        }
     }
     public Curso buscarPorId(int id) throws Exception {
         if (id <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO cursoDAO = new CursoDAO();
-        Curso curso = cursoDAO.selecionarPorId(id);
-
-        if (curso == null) {
-            throw new Exception("CURSO_NAO_ENCONTRADO");
+        CursoDAO cursoDAO = null;
+        try {
+            cursoDAO = new CursoDAO();
+            Curso curso = cursoDAO.selecionarPorId(id);
+            if (curso == null) {
+                throw new Exception("CURSO_NAO_ENCONTRADO");
+            }
+            return curso;
+        } finally {
+            if (cursoDAO != null) {
+                cursoDAO.fecharConexao();
+            }
         }
-
-        return curso;
     }
     public List<Curso> listarTodos() throws Exception {
-        CursoDAO cursoDAO = new CursoDAO();
-        List<Curso> lista = cursoDAO.listarTodos();
+        CursoDAO cursoDAO = null;
+        try {
+            cursoDAO = new CursoDAO();
+            List<Curso> lista = cursoDAO.listarTodos();
 
-        if (lista.isEmpty()) {
-            throw new Exception("LISTA_VAZIA");
+            if (lista.isEmpty()) {
+                throw new Exception("LISTA_VAZIA");
+            }
+
+            return lista;
+        } finally {
+            if (cursoDAO != null) {
+                cursoDAO.fecharConexao();
+            }
         }
-
-        return lista;
     }
     public void atualizar(Curso curso) throws Exception {
         if (curso.getIdCurso() <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
-        CursoDAO cursoDAO = new CursoDAO();
-        String resultado = cursoDAO.atualizar(curso);
+        CursoDAO cursoDAO = null;
+        try {
+            cursoDAO = new CursoDAO();
+            String resultado = cursoDAO.atualizar(curso);
 
-        if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
-            throw new Exception("CURSO_NAO_ENCONTRADO");
+            if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
+                throw new Exception("CURSO_NAO_ENCONTRADO");
+            }
+        } finally {
+            if (cursoDAO != null) {
+                cursoDAO.fecharConexao();
+            }
         }
     }
+
     public void deletar(int id) throws Exception {
         if (id <= 0) {
             throw new Exception("DADOS_INVALIDOS");
         }
+        CursoDAO cursoDAO = null;
+        try {
+            cursoDAO = new CursoDAO();
+            String resultado = cursoDAO.deletar(id);
 
-        CursoDAO cursoDAO = new CursoDAO();
-        String resultado = cursoDAO.deletar(id);
-
-        if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
-            throw new Exception("CURSO_NAO_ENCONTRADO");
+            if (resultado.equals("CURSO_NAO_ENCONTRADO")) {
+                throw new Exception("CURSO_NAO_ENCONTRADO");
+            }
+        } finally {
+            if (cursoDAO != null) {
+                cursoDAO.fecharConexao();
+            }
         }
     }
 }

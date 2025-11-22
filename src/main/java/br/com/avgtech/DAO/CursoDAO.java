@@ -16,7 +16,6 @@ public class CursoDAO {
     }
     public void inserir(Curso curso) throws SQLException {
         String sql = "INSERT INTO CURSO (NOME, DESCRICAO, URL_VIDEO) VALUES (?, ?, ?)";
-
         PreparedStatement statement = conexao.prepareStatement(sql);
 
         statement.setString(1, curso.getNome());
@@ -27,7 +26,6 @@ public class CursoDAO {
         statement.close();
     }
     public Curso selecionarPorId(int id) throws SQLException {
-
         String sql = "SELECT * FROM CURSO WHERE ID_CURSO=?";
         PreparedStatement statement = conexao.prepareStatement(sql);
 
@@ -54,19 +52,19 @@ public class CursoDAO {
         String sql = "SELECT * FROM CURSO";
         PreparedStatement statement = conexao.prepareStatement(sql);
 
-        ResultSet resultado = statement.executeQuery();
-        while (resultado.next()) {
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
             Curso curso = new Curso();
 
-            curso.setIdCurso(resultado.getInt(1));
-            curso.setNome(resultado.getString(2));
-            curso.setDescricao(resultado.getString(3));
-            curso.setUrlVideo(resultado.getString(4));
-            curso.setDataCriacao(resultado.getString(5));
+            curso.setIdCurso(rs.getInt(1));
+            curso.setNome(rs.getString(2));
+            curso.setDescricao(rs.getString(3));
+            curso.setUrlVideo(rs.getString(4));
+            curso.setDataCriacao(rs.getString(5));
 
             lista.add(curso);
         }
-        resultado.close();
+        rs.close();
         statement.close();
 
         return lista;
