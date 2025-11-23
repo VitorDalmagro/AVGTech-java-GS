@@ -1,5 +1,6 @@
 package br.com.avgtech.BO;
 
+import br.com.avgtech.DAO.CursoUsuarioDAO;
 import br.com.avgtech.DAO.UsuarioDAO;
 import br.com.avgtech.beans.Usuario;
 
@@ -106,15 +107,32 @@ public class UsuarioBO {
             throw new Exception("DADOS_INVALIDOS");
         }
         UsuarioDAO usuarioDAO = null;
+        CursoUsuarioDAO cursoUsuarioDAO = null;
+
         try {
             usuarioDAO = new UsuarioDAO();
-            String resultado = usuarioDAO.deletar(id);
-            if ("USUARIO_NAO_ENCONTRADO".equals(resultado)) {
+
+            // verifica se o usuário existe
+            Usuario usuarioEncontrado = usuarioDAO.selecionarPorId(id);
+            if (usuarioEncontrado == null) {
                 throw new Exception("USUARIO_NAO_ENCONTRADO");
             }
+
+            // verifica se o usuário possui matrículas
+            cursoUsuarioDAO = new CursoUsuarioDAO();
+            boolean possuiMatriculas = !cursoUsuarioDAO.listarCursosDoUsuario(id).isEmpty();
+
+            if (possuiMatriculas) {
+                throw new Exception("USUARIO_POSSUI_MATRICULAS");
+            }
+
+            usuarioDAO.deletar(id);
             return "OK";
+
         } finally {
             if (usuarioDAO != null) usuarioDAO.fecharConexao();
+            if (cursoUsuarioDAO != null) cursoUsuarioDAO.fecharConexao();
         }
     }
+
 }

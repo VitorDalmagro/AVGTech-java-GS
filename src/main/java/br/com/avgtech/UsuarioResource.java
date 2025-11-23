@@ -107,16 +107,20 @@ public class UsuarioResource {
             UsuarioBO bo = new UsuarioBO();
             bo.deletar(id);
             return Response.status(200).entity("Usuário deletado com sucesso.").build();
+
         } catch (Exception e) {
             switch (e.getMessage()) {
                 case "DADOS_INVALIDOS":
                     return Response.status(400).entity("ID inválido.").build();
                 case "USUARIO_NAO_ENCONTRADO":
                     return Response.status(404).entity("Usuário não encontrado.").build();
+                case "USUARIO_POSSUI_MATRICULAS":
+                    return Response.status(409).entity("Não é possível deletar: usuário possui matrículas ativas.").build();
                 default:
                     return Response.status(500).entity("Erro inesperado.").build();
             }
         }
     }
+
 
 }
