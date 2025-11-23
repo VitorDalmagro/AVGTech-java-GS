@@ -39,9 +39,27 @@ public class AutenticacaoResource {
         try {
             LoginBO bo = new LoginBO();
             Usuario usuarioLogado = bo.logar(usuario.getEmail(), usuario.getSenha());
-            return Response.status(200).entity(usuarioLogado).build();
+            return Response.status(200).entity("Login realizado com sucesso.").build();
+
         } catch (Exception e) {
-            return Response.status(401).entity(e.getMessage()).build();
+            switch (e.getMessage()) {
+                case "EMAIL_INVALIDO":
+                    return Response.status(400)
+                            .entity("Email inválido. Preencha corretamente.")
+                            .build();
+                case "SENHA_INVALIDA":
+                    return Response.status(400)
+                            .entity("Senha inválida. Não deixe vazio.")
+                            .build();
+                case "CREDENCIAIS_INVALIDAS":
+                    return Response.status(401)
+                            .entity("Email ou senha incorretos.")
+                            .build();
+                default:
+                    return Response.status(500)
+                            .entity("Erro inesperado ao realizar login.")
+                            .build();
+            }
         }
     }
 

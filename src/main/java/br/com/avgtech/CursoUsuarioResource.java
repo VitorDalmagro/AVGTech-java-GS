@@ -2,6 +2,7 @@ package br.com.avgtech;
 
 import br.com.avgtech.BO.CursoUsuarioBO;
 import br.com.avgtech.beans.Curso;
+import br.com.avgtech.beans.Matricula;
 import br.com.avgtech.beans.Usuario;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -35,6 +36,7 @@ public class CursoUsuarioResource {
             }
         }
     }
+
     @DELETE
     @Path("/usuario/{idUsuario}/curso/{idCurso}")
     public Response desmatricular(@PathParam("idUsuario") int idUsuario, @PathParam("idCurso") int idCurso) {
@@ -46,11 +48,13 @@ public class CursoUsuarioResource {
         } catch (Exception e) {
             return switch (e.getMessage()) {
                 case "DADOS_INVALIDOS" -> Response.status(400).entity("Dados inválidos.").build();
-                case "NAO_MATRICULADO" -> Response.status(404).entity("O usuário não estava matriculado neste curso.").build();
+                case "NAO_MATRICULADO" ->
+                        Response.status(404).entity("O usuário não estava matriculado neste curso.").build();
                 default -> Response.status(500).entity("Erro inesperado.").build();
             };
         }
     }
+
     @GET
     @Path("/usuario/{idUsuario}/cursos")
     public Response listarCursos(@PathParam("idUsuario") int idUsuario) {
@@ -69,6 +73,7 @@ public class CursoUsuarioResource {
             }
         }
     }
+
     @GET
     @Path("/curso/{idCurso}/usuarios")
     public Response listarUsuariosDoCurso(@PathParam("idCurso") int idCurso) {
@@ -84,11 +89,12 @@ public class CursoUsuarioResource {
             };
         }
     }
+
     @GET
     public Response listarTodas() {
         try {
             CursoUsuarioBO bo = new CursoUsuarioBO();
-            List<String> lista = bo.listarTodas();
+            List<Matricula> lista = bo.listarTodas();
             return Response.status(200).entity(lista).build();
 
         } catch (Exception e) {

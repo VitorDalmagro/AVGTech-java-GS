@@ -4,6 +4,7 @@ import br.com.avgtech.DAO.CursoDAO;
 import br.com.avgtech.DAO.CursoUsuarioDAO;
 import br.com.avgtech.DAO.UsuarioDAO;
 import br.com.avgtech.beans.Curso;
+import br.com.avgtech.beans.Matricula;
 import br.com.avgtech.beans.Usuario;
 
 import java.sql.SQLException;
@@ -104,17 +105,21 @@ public class CursoUsuarioBO {
             if (cursoUsuarioDAO != null) cursoUsuarioDAO.fecharConexao();
         }
     }
-    public List<String> listarTodas() throws Exception {
+    public List<Matricula> listarTodas() throws Exception {
         CursoUsuarioDAO cursoUsuarioDAO = null;
         try {
             cursoUsuarioDAO = new CursoUsuarioDAO();
-            List<String> lista = cursoUsuarioDAO.listarTodasMatriculas();
+            List<Matricula> lista = cursoUsuarioDAO.listarTodasMatriculas();
+
             if (lista.isEmpty()) {
                 throw new Exception("LISTA_VAZIA");
             }
+
             return lista;
+
         } finally {
             if (cursoUsuarioDAO != null) cursoUsuarioDAO.fecharConexao();
         }
     }
+
 }

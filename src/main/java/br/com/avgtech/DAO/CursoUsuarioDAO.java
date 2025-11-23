@@ -1,6 +1,7 @@
 package br.com.avgtech.DAO;
 
 import br.com.avgtech.beans.Curso;
+import br.com.avgtech.beans.Matricula;
 import br.com.avgtech.beans.Usuario;
 import br.com.avgtech.conexao.ConexaoFactory;
 
@@ -80,16 +81,18 @@ public class CursoUsuarioDAO {
 
         return lista;
     }
-    public List<String> listarTodasMatriculas() throws SQLException {
-        List<String> lista = new ArrayList<>();
+    public List<Matricula> listarTodasMatriculas() throws SQLException {
+        List<Matricula> lista = new ArrayList<>();
 
         String sql = "SELECT ID_USUARIO, ID_CURSO FROM CURSO_USUARIO";
-
         PreparedStatement statement = conexao.prepareStatement(sql);
         ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
-            lista.add("Usuario: " + rs.getInt(1) + " - Curso: " + rs.getInt(2));
+            Matricula matricula = new Matricula();
+            matricula.setIdUsuario(rs.getInt("ID_USUARIO"));
+            matricula.setIdCurso(rs.getInt("ID_CURSO"));
+            lista.add(matricula);
         }
 
         rs.close();
@@ -97,6 +100,8 @@ public class CursoUsuarioDAO {
 
         return lista;
     }
+
+
     public List<Curso> listarCursosDoUsuario(int idUsuario) throws SQLException {
         List<Curso> lista = new ArrayList<>();
 
