@@ -44,21 +44,13 @@ public class AutenticacaoResource {
         } catch (Exception e) {
             switch (e.getMessage()) {
                 case "EMAIL_INVALIDO":
-                    return Response.status(400)
-                            .entity("Email inválido. Preencha corretamente.")
-                            .build();
+                    return Response.status(400).entity("Email inválido. Preencha corretamente.").build();
                 case "SENHA_INVALIDA":
-                    return Response.status(400)
-                            .entity("Senha inválida. Não deixe vazio.")
-                            .build();
+                    return Response.status(400).entity("Senha inválida. Não deixe vazio.").build();
                 case "CREDENCIAIS_INVALIDAS":
-                    return Response.status(401)
-                            .entity("Email ou senha incorretos.")
-                            .build();
+                    return Response.status(401).entity("Email ou senha incorretos.").build();
                 default:
-                    return Response.status(500)
-                            .entity("Erro inesperado ao realizar login.")
-                            .build();
+                    return Response.status(500).entity("Erro inesperado ao realizar login.").build();
             }
         }
     }
